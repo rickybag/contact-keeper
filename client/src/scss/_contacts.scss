@@ -1,0 +1,42 @@
+.contacts {
+  .contact-item {
+    border: 1px solid #c6c6c6;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+
+    animation-name: fadeIn;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-direction: alternate;
+
+    .contact-name {
+      display: flex;
+      justify-content: space-between;
+      font-size: 1.25rem;
+      font-weight: 700;
+      .badge {
+        display: flex;
+        align-items: center;
+      }
+    }
+    .contact-list {
+      margin: 0.5rem 0;
+    }
+    .contact-actions {
+      button {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

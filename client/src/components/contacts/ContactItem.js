@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
+import ContactContext from "../../context/contact/contactContext";
 
 const ContactItem = ({ contact }) => {
+  const contactContext = useContext(ContactContext);
+
+  const { deleteContact, setCurrent, clearCurrent } = contactContext;
+
   const { id, name, email, phone, type } = contact;
+
+  const onDelete = () => {
+    deleteContact(id);
+    clearCurrent();
+  };
+
   return (
-    <div className="card p-2 bg-light">
-      <div className="text-primary text-left">
+    <div className="contact-item">
+      <div className="contact-name">
         {name}
         <span
           className={`badge ${
@@ -15,7 +26,7 @@ const ContactItem = ({ contact }) => {
           {type.charAt(0).toUpperCase() + type.slice(1)}
         </span>
       </div>
-      <ul className="list">
+      <ul className="contact-list">
         {email && (
           <li>
             <i className="fas fa-envelope-open"></i> {email}
@@ -27,9 +38,16 @@ const ContactItem = ({ contact }) => {
           </li>
         )}
       </ul>
-      <div>
-        <button className="btn btn-dark btn-sm">Edit</button>
-        <button className="btn btn-danger btn-sm">Delete</button>
+      <div className="contact-actions">
+        <button
+          className="btn btn-dark btn-sm"
+          onClick={() => setCurrent(contact)}
+        >
+          Edit
+        </button>
+        <button className="btn btn-danger btn-sm" onClick={onDelete}>
+          Delete
+        </button>
       </div>
     </div>
   );
