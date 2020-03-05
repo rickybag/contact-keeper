@@ -1,38 +1,58 @@
-import React from "react";
+import React, { useContext } from "react";
 import PropTypes from "prop-types";
 
 import { NavLink } from "react-router-dom";
 
+import AuthContext from "../../context/auth/authContext";
+import ContactContext from "../../context/contact/contactContext";
+
 const Navbar = ({ title, icon }) => {
+  const authContext = useContext(AuthContext);
+  const contactContext = useContext(ContactContext);
+
+  const { isAuthenticated, logout, user } = authContext;
+  const { clearContacts } = contactContext;
+
+  const onLogout = () => {
+    logout();
+    clearContacts();
+  };
+
+  const authLinks = (
+    <>
+      <li className="nav-link">Hello {user && user.name}</li>
+      <li className="nav-item">
+        <a onClick={onLogout} className="nav-link" href="#!">
+          <i className="fas fa-sign-out-alt"></i>
+          <span className="hide-sm">Logout</span>
+        </a>
+      </li>
+    </>
+  );
+
+  const guestLinks = (
+    <>
+      <li className="nav-item">
+        <NavLink className="nav-link" to="/register">
+          Register
+        </NavLink>
+      </li>
+      <li className="nav-item">
+        <NavLink className="nav-link" to="/login">
+          Login
+        </NavLink>
+      </li>
+    </>
+  );
+
   return (
     <nav className="navbar navbar-expand-sm navbar-dark bg-primary">
       <div className="container">
         <div className="navbar-brand">
-          <h3>
-            <i className={icon} /> {title}
-          </h3>
+          <i className={icon} /> {title}
         </div>
         <ul className="navbar-nav">
-          <li className="nav-item">
-            <NavLink exact className="nav-link" to="/">
-              Home
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/about">
-              About
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/register">
-              Register
-            </NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/login">
-              Login
-            </NavLink>
-          </li>
+          {isAuthenticated ? authLinks : guestLinks}
         </ul>
       </div>
     </nav>
